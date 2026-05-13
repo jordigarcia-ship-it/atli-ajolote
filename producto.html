@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Producto — Atli El Ajolote</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .prod-page { background: #f7f7f7; min-height: 100vh; padding: 40px 20px 80px; }
+
+    /* ── Migas de pan ── */
+    .breadcrumb {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 24px;
+      max-width: 1080px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .breadcrumb a { color: var(--green-dark); text-decoration: underline; }
+    .breadcrumb span { margin: 0 6px; }
+
+    /* ── Layout principal 2 columnas ── */
+    .prod-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    @media (min-width: 760px) {
+      .prod-layout { grid-template-columns: 1.1fr 1fr; }
+    }
+
+    /* ── Galería izquierda ── */
+    .prod-gallery {}
+    .prod-main-img-wrap {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #prod-main-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 20px;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .prod-thumbs {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .prod-thumb {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: var(--radius-sm);
+      border: 3px solid transparent;
+      cursor: pointer;
+      padding: 6px;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .prod-thumb.active { border-color: var(--green-dark); }
+    .prod-thumb:hover { transform: scale(1.08); border-color: var(--green-dark); }
+
+    /* ── Info derecha ── */
+    .prod-info-panel {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 32px 30px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .prod-badge {
+      display: inline-block;
+      background: var(--aqua);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border-radius: 50px;
+      width: fit-content;
+    }
+    #prod-nombre {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 900;
+      font-size: clamp(24px, 4vw, 34px);
+      color: var(--text-dark);
+      line-height: 1.2;
+      margin: 0;
+    }
+    #prod-precio {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 32px;
+      color: var(--green-dark);
+    }
+    .prod-divider { height: 1px; background: #eee; }
+
+    /* Variantes */
+    .variantes-label {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .variantes-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .variante-btn {
+      background: var(--cream);
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      padding: 8px 16px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .variante-btn.active, .variante-btn:hover {
+      background: var(--green-dark);
+      border-color: var(--green-dark);
+      color: #fff;
+    }
+
+    /* Cantidad */
+    .cantidad-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .cantidad-label {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .cantidad-ctrl {
+      display: flex;
+      align-items: center;
+      border: 2px solid #ddd;
+      border-radius: 50px;
+      overflow: hidden;
+    }
+    .cantidad-ctrl button {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: var(--cream);
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .cantidad-ctrl button:hover { background: #e0e0e0; }
+    .cantidad-ctrl span {
+      padding: 0 16px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    /* Botones de compra */
+    .btn-agregar {
+      width: 100%;
+      padding: 16px;
+      background: var(--yellow);
+      color: var(--text-dark);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.18s;
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-agregar:hover { background: #e6bc00; transform: scale(1.02); }
+
+    .btn-comprar {
+      width: 100%;
+      padding: 16px;
+      background: var(--green-dark);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.18s;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-comprar:hover { background: #5a7223; transform: scale(1.02); }
+    .btn-comprar .ripple {
+      position: absolute; border-radius: 50%;
+      background: var(--pink); opacity: 0.55;
+      transform: scale(0); animation: ripple-wave 0.55s ease-out forwards;
+    }
+
+    #prod-desc {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.7;
+      background: var(--cream);
+      border-radius: var(--radius-sm);
+      padding: 16px 18px;
+    }
+
+    /* Garantía chips */
+    .garantia-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .garantia-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f0f8f0;
+      border: 1px solid #c8e6c9;
+      border-radius: 50px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green-dark);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      font-size: 14px;
+      color: #999;
+      text-decoration: underline;
+      max-width: 1080px;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      text-align: center;
+    }
+    .back-link:hover { color: var(--green-dark); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--green-dark);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      padding: 14px 30px;
+      border-radius: 50px;
+      box-shadow: var(--shadow-lg);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      z-index: 9999;
+      white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo.png" alt="Logo Atli" class="logo-img">
+        </a>
+      </div>
+      <nav class="nav">
+        <a href="index.html#inicio">Inicio</a>
+        <a href="index.html#hogar">Hogar</a>
+        <a href="index.html#emergencia">Emergencia</a>
+        <a href="index.html#guardianes">Guardianes</a>
+        <a href="index.html#cta">Contacto</a>
+      </nav>
+      <a href="donar.html" class="btn btn-donar">Donar</a>
+    </div>
+  </header>
+
+  <!-- CONTENIDO -->
+  <div class="prod-page">
+
+    <!-- Migas de pan -->
+    <p class="breadcrumb">
+      <a href="index.html">Inicio</a><span>›</span>
+      <a href="productos.html">Productos</a><span>›</span>
+      <span id="breadcrumb-nombre">Producto</span>
+    </p>
+
+    <div class="prod-layout">
+
+      <!-- GALERÍA -->
+      <div class="prod-gallery">
+        <div class="prod-main-img-wrap">
+          <img id="prod-main-img" src="" alt="Producto">
+        </div>
+        <div class="prod-thumbs" id="prod-thumbs"></div>
+      </div>
+
+      <!-- INFO -->
+      <div class="prod-info-panel">
+        <div class="prod-badge">Colección Atli</div>
+        <h1 id="prod-nombre">Cargando...</h1>
+        <p id="prod-precio"></p>
+
+        <div class="prod-divider"></div>
+
+        <!-- Variantes -->
+        <div id="variantes-wrap" style="display:none">
+          <p class="variantes-label">Elige tu versión</p>
+          <div class="variantes-row" id="variantes-row"></div>
+        </div>
+
+        <!-- Cantidad -->
+        <div class="cantidad-row">
+          <span class="cantidad-label">Cantidad</span>
+          <div class="cantidad-ctrl">
+            <button id="btn-menos">−</button>
+            <span id="cantidad-num">1</span>
+            <button id="btn-mas">+</button>
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <button class="btn-agregar" id="btn-carrito">Agregar al carrito</button>
+        <button class="btn btn-comprar" id="btn-comprar">Comprar ahora</button>
+
+        <div class="prod-divider"></div>
+
+        <p id="prod-desc"></p>
+
+        <!-- Garantías -->
+        <div class="garantia-row">
+          <span class="garantia-chip">✅ Envío a todo México</span>
+          <span class="garantia-chip">🔒 Pago seguro</span>
+          <span class="garantia-chip">💚 Apoya al ajolote</span>
+        </div>
+      </div>
+    </div>
+
+    <a href="productos.html" class="back-link">← Ver todos los productos</a>
+  </div>
+
+  <!-- Toast notificación -->
+  <div class="toast" id="toast">¡Agregado al carrito! 🛒</div>
+
+  <script>
+    // ── Datos de productos ──
+    const catalogo = {
+      blindbox: {
+        nombre: 'Blind Box',
+        precio: '$250 MXN',
+        desc: '¡Sorpresa! Cada blind box trae una figura exclusiva de Atli en diferentes versiones. ¿Cuál te tocará? Colecciónalas todas y arma tu equipo de ajolotes.',
+        imgs: ['images/atli-urbano.png','images/atli-sureño.png','images/atli-pre.png','images/atli-buzo.png'],
+        variantes: ['Urbano','Sureño','Pre','Buzo']
+      },
+      camisa: {
+        nombre: 'Camisa',
+        precio: '$380 MXN',
+        desc: 'Luce a Atli con estilo. Camisas de alta calidad con diseños exclusivos del ajolote. Disponible en dos diseños únicos.',
+        imgs: ['images/camisa-1.png','images/camisa-2.png'],
+        variantes: ['Diseño 1','Diseño 2']
+      },
+      termos: {
+        nombre: 'Termos',
+        precio: '$320 MXN',
+        desc: 'Mantén tus bebidas a la temperatura perfecta con Atli. Termos de acero inoxidable con diseño exclusivo del ajolote.',
+        imgs: ['images/termo-1.png','images/termo-2.png'],
+        variantes: ['Modelo 1','Modelo 2']
+      },
+      totebag: {
+        nombre: 'Tote Bag',
+        precio: '$180 MXN',
+        desc: 'Lleva tus cosas con conciencia ambiental. Bolsa de tela 100% reutilizable con el diseño de Atli. Resistente y ecológica.',
+        imgs: ['images/tote-bag.png'],
+        variantes: []
+      },
+      stickers: {
+        nombre: 'Stickers',
+        precio: '$80 MXN',
+        desc: 'Pack de stickers exclusivos de Atli. Decora tu laptop, cuaderno, termo o lo que quieras con el ajolote más cool de México.',
+        imgs: ['images/stickers.png'],
+        variantes: []
+      }
+    };
+
+    // ── Leer parámetro de URL ──
+    const params  = new URLSearchParams(window.location.search);
+    const id      = params.get('id') || 'blindbox';
+    const prod    = catalogo[id] || catalogo['blindbox'];
+
+    // ── Poblar contenido ──
+    document.title = prod.nombre + ' — Atli El Ajolote';
+    document.getElementById('prod-nombre').textContent      = prod.nombre;
+    document.getElementById('prod-precio').textContent      = prod.precio;
+    document.getElementById('prod-desc').textContent        = prod.desc;
+    document.getElementById('breadcrumb-nombre').textContent = prod.nombre;
+
+    const mainImg  = document.getElementById('prod-main-img');
+    const thumbsEl = document.getElementById('prod-thumbs');
+    let imgActual  = 0;
+
+    const setImg = (idx) => {
+      imgActual = idx;
+      mainImg.style.opacity   = '0';
+      mainImg.style.transform = 'scale(0.96)';
+      setTimeout(() => {
+        mainImg.src             = prod.imgs[idx];
+        mainImg.style.opacity   = '1';
+        mainImg.style.transform = 'scale(1)';
+      }, 160);
+      document.querySelectorAll('.prod-thumb').forEach((t,i) =>
+        t.classList.toggle('active', i === idx));
+      if (prod.variantes.length) {
+        document.querySelectorAll('.variante-btn').forEach((b,i) =>
+          b.classList.toggle('active', i === idx));
+      }
+    };
+
+    // Thumbnails
+    if (prod.imgs.length > 1) {
+      prod.imgs.forEach((src, i) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.className = 'prod-thumb' + (i === 0 ? ' active' : '');
+        img.addEventListener('click', () => setImg(i));
+        thumbsEl.appendChild(img);
+      });
+    }
+    mainImg.src = prod.imgs[0];
+    mainImg.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+
+    // Variantes
+    if (prod.variantes.length > 0) {
+      const wrap = document.getElementById('variantes-wrap');
+      const row  = document.getElementById('variantes-row');
+      wrap.style.display = 'block';
+      prod.variantes.forEach((v, i) => {
+        const btn = document.createElement('button');
+        btn.className  = 'variante-btn' + (i === 0 ? ' active' : '');
+        btn.textContent = v;
+        btn.addEventListener('click', () => setImg(i));
+        row.appendChild(btn);
+      });
+    }
+
+    // Cantidad
+    let cantidad = 1;
+    const numEl  = document.getElementById('cantidad-num');
+    document.getElementById('btn-mas').addEventListener('click', () => { cantidad++; numEl.textContent = cantidad; });
+    document.getElementById('btn-menos').addEventListener('click', () => {
+      if (cantidad > 1) { cantidad--; numEl.textContent = cantidad; }
+    });
+
+    // Toast
+    const showToast = (msg) => {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    };
+
+    // Botones de compra
+    document.getElementById('btn-carrito').addEventListener('click', () => {
+      showToast(`¡${cantidad} ${prod.nombre} agregado${cantidad > 1 ? 's' : ''} al carrito! 🛒`);
+    });
+
+    document.getElementById('btn-comprar').addEventListener('click', function(e) {
+      // Ripple
+      const ripple = document.createElement('span');
+      ripple.classList.add('ripple');
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+      this.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove());
+      showToast('Redirigiendo al pago... 💳');
+    });
+  </script>
+</body>
+</html>

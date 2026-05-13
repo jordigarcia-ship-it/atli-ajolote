@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Camisa — Atli El Ajolote</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="prod-styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Logo Atli" class="logo-img"></a></div>
+      <nav class="nav">
+        <a href="index.html#inicio">Inicio</a>
+        <a href="index.html#hogar">Hogar</a>
+        <a href="index.html#emergencia">Emergencia</a>
+        <a href="index.html#guardianes">Guardianes</a>
+        <a href="index.html#cta">Contacto</a>
+      </nav>
+      <a href="donar.html" class="btn btn-donar">Donar</a>
+    </div>
+  </header>
+
+  <div class="prod-page">
+    <p class="breadcrumb">
+      <a href="index.html">Inicio</a><span>›</span>
+      <a href="productos.html">Productos</a><span>›</span>
+      <span>Camisa</span>
+    </p>
+
+    <div class="prod-layout">
+      <div class="prod-gallery">
+        <div class="prod-main-img-wrap">
+          <img id="main-img" src="images/camisa-1.png" alt="Camisa Atli">
+        </div>
+        <div class="prod-thumbs">
+          <img src="images/camisa-1.png" alt="Diseño 1" class="prod-thumb active" onclick="setImg(this)">
+          <img src="images/camisa-2.png" alt="Diseño 2" class="prod-thumb"        onclick="setImg(this)">
+        </div>
+      </div>
+
+      <div class="prod-info-panel">
+        <span class="prod-badge">Colección Atli</span>
+        <h1 class="prod-nombre">Camisa 👕</h1>
+        <p class="prod-precio">$380 MXN</p>
+        <div class="prod-divider"></div>
+
+        <div>
+          <p class="variantes-label">Elige tu diseño</p>
+          <div class="variantes-row">
+            <button class="variante-btn active" onclick="selectVar(this,0)">Diseño 1</button>
+            <button class="variante-btn"        onclick="selectVar(this,1)">Diseño 2</button>
+          </div>
+        </div>
+
+        <div>
+          <p class="variantes-label">Talla</p>
+          <div class="variantes-row">
+            <button class="variante-btn">XS</button>
+            <button class="variante-btn">S</button>
+            <button class="variante-btn active">M</button>
+            <button class="variante-btn">L</button>
+            <button class="variante-btn">XL</button>
+          </div>
+        </div>
+
+        <div class="cantidad-row">
+          <span class="cantidad-label">Cantidad</span>
+          <div class="cantidad-ctrl">
+            <button onclick="cambiarCantidad(-1)">−</button>
+            <span id="cant">1</span>
+            <button onclick="cambiarCantidad(1)">+</button>
+          </div>
+        </div>
+
+        <button class="btn-agregar" onclick="agregar()">Agregar al carrito</button>
+        <button class="btn-comprar btn" onclick="comprar(event)">Comprar ahora</button>
+        <div class="prod-divider"></div>
+        <p class="prod-desc">Luce a Atli con estilo. Camisas de alta calidad 100% algodón con diseños exclusivos del ajolote. Disponible en dos diseños únicos y todas las tallas.</p>
+        <div class="garantia-row">
+          <span class="garantia-chip">✅ Envío a todo México</span>
+          <span class="garantia-chip">🔒 Pago seguro</span>
+          <span class="garantia-chip">💚 Apoya al ajolote</span>
+        </div>
+      </div>
+    </div>
+    <a href="productos.html" class="back-link">← Ver todos los productos</a>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="prod-script.js"></script>
+  <script>
+    const imgs = ['images/camisa-1.png','images/camisa-2.png'];
+    function selectVar(btn, idx) {
+      document.querySelectorAll('.variante-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      setImgSrc(imgs[idx]);
+      document.querySelectorAll('.prod-thumb').forEach((t,i) => t.classList.toggle('active', i===idx));
+    }
+  </script>
+</body>
+</html>

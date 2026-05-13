@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donar — Atli El Ajolote</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── Fondo y layout general ── */
+    .donar-section {
+      background: #fff;
+      padding: 70px 20px 90px;
+      text-align: center;
+    }
+    .donar-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ── Encabezado igual al CTA ── */
+    .donar-emoji-big {
+      font-size: 60px;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .donar-inner .section-title {
+      margin-bottom: 10px;
+    }
+    .donar-sub {
+      font-size: 17px;
+      color: #555;
+      max-width: 500px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    /* ── Chips de monto (estilo dato-chip) ── */
+    .montos-titulo {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--green-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+    .montos-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .monto-chip {
+      background: var(--cream);
+      border: 2px solid #e8e8e8;
+      border-radius: 50px;
+      padding: 12px 24px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .monto-chip:hover { transform: scale(1.07); border-color: var(--green-dark); }
+    .monto-chip.selected {
+      background: var(--green-dark);
+      border-color: var(--green-dark);
+      color: #fff;
+      transform: scale(1.07);
+    }
+
+    /* ── Formulario ── */
+    .form-card {
+      background: var(--cream);
+      border-radius: var(--radius-lg);
+      padding: 36px 36px 32px;
+      margin-top: 28px;
+      text-align: left;
+      box-shadow: var(--shadow-sm);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 580px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--green-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 7px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 13px 16px;
+      border: 2px solid #ddd;
+      border-radius: var(--radius-sm);
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      color: var(--text-dark);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--green-dark);
+      box-shadow: 0 0 0 3px rgba(111,140,43,0.13);
+    }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: #ddd;
+      margin: 22px 0;
+    }
+
+    /* ── Botón principal igual al CTA ── */
+    .btn-donar-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--green-dark);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 19px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: var(--shadow-md);
+    }
+    .btn-donar-submit:hover {
+      background: #5a7223;
+      transform: scale(1.02);
+      box-shadow: var(--shadow-lg);
+    }
+    .btn-donar-submit:active { transform: scale(1.15); }
+    .btn-donar-submit .ripple {
+      position: absolute; border-radius: 50%;
+      background: var(--pink); opacity: 0.55;
+      transform: scale(0); animation: ripple-wave 0.55s ease-out forwards;
+    }
+
+    /* ── Datos rápidos (igual que el CTA) ── */
+    .donar-chips {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 40px;
+      text-align: left;
+    }
+    @media (min-width: 600px) {
+      .donar-chips { flex-direction: row; }
+    }
+
+    /* ── Volver ── */
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      font-size: 14px;
+      color: #999;
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--green-dark); }
+
+    /* ── Wave top ── */
+    .wave-donar-top {
+      position: relative;
+      height: 80px;
+      background: var(--yellow);
+      overflow: hidden;
+    }
+    .wave-donar-top svg { position: absolute; bottom: -1px; width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo.png" alt="Logo Atli" class="logo-img">
+        </a>
+      </div>
+      <nav class="nav">
+        <a href="index.html#inicio">Inicio</a>
+        <a href="index.html#hogar">Hogar</a>
+        <a href="index.html#emergencia">Emergencia</a>
+        <a href="index.html#guardianes">Guardianes</a>
+        <a href="index.html#cta">Contacto</a>
+      </nav>
+      <a href="index.html#cta" class="btn btn-donar">Donar</a>
+    </div>
+  </header>
+
+  <!-- OLA DECORATIVA SUPERIOR -->
+  <div class="wave-donar-top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,80 L0,50 Q30,10 60,38 Q90,60 120,30 Q150,5 180,30 Q210,55 240,42 Q270,28 300,8 Q330,0 360,22 Q390,46 420,56 Q450,64 480,44 Q510,22 540,8 Q570,0 600,26 Q630,52 660,60 Q690,68 720,46 Q750,26 780,8 Q810,0 840,28 Q870,54 900,64 Q930,68 960,46 Q990,26 1020,10 Q1050,0 1080,26 Q1110,52 1140,60 Q1170,68 1200,46 Q1230,26 1260,10 Q1290,0 1320,28 Q1350,54 1380,46 Q1410,38 1440,50 L1440,80 Z" fill="#ffffff"/>
+    </svg>
+  </div>
+
+  <!-- SECCIÓN PRINCIPAL -->
+  <section class="donar-section">
+    <div class="donar-inner">
+
+      <span class="donar-emoji-big">💧</span>
+      <h1 class="section-title">¡Únete al Equipo de Rescate!</h1>
+      <p class="donar-sub">
+        Tu donación ayuda a conservar el hábitat del ajolote en Xochimilco.
+        Cada peso cuenta para mantener vivo este ecosistema único.
+      </p>
+
+      <!-- Montos rápidos -->
+      <p class="montos-titulo">Elige un monto (MXN)</p>
+      <div class="montos-row">
+        <button class="monto-chip" type="button" data-monto="50">$50</button>
+        <button class="monto-chip selected" type="button" data-monto="100">$100</button>
+        <button class="monto-chip" type="button" data-monto="200">$200</button>
+        <button class="monto-chip" type="button" data-monto="500">$500</button>
+      </div>
+
+      <!-- Formulario -->
+      <form id="donar-form">
+        <div class="form-card">
+
+          <div class="form-group">
+            <label for="monto-custom">Otro monto (MXN)</label>
+            <input type="number" id="monto-custom" name="monto" placeholder="$ Escribe el monto" min="1" value="100">
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombre">Nombre completo</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+            </div>
+            <div class="form-group">
+              <label for="telefono">Teléfono</label>
+              <input type="tel" id="telefono" name="telefono" placeholder="+52 81 0000 0000">
+            </div>
+            <div class="form-group full">
+              <label for="email">Correo electrónico</label>
+              <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required>
+            </div>
+            <div class="form-group full">
+              <label for="mensaje">Mensaje (opcional)</label>
+              <textarea id="mensaje" name="mensaje" placeholder="¿Por qué quieres ayudar al ajolote?"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-donar-submit">¡Donar ahora!</button>
+        </div>
+      </form>
+
+      <!-- Chips de datos rápidos (mismos que el CTA) -->
+      <div class="donar-chips">
+        <div class="dato-chip">
+          <span class="dato-emoji">💵</span>
+          <div>
+            <strong>¿Sabías qué?</strong>
+            <p>¡Salgo en los billetes de $50 pesos! Soy una celebridad mexicana.</p>
+          </div>
+        </div>
+        <div class="dato-chip">
+          <span class="dato-emoji">🐾</span>
+          <div>
+            <strong>Mito Azteca</strong>
+            <p>Los aztecas decían que soy el dios Xólotl, que se transformó para protegerse.</p>
+          </div>
+        </div>
+        <div class="dato-chip">
+          <span class="dato-emoji">📱</span>
+          <div>
+            <strong>Para saber más</strong>
+            <p>Visita nuestra página y conoce más sobre SEAland.</p>
+            <a href="https://www.sealand.com.mx/monterrey/" target="_blank" rel="noopener" class="btn btn-sealand">Ver más</a>
+          </div>
+        </div>
+      </div>
+
+      <a href="index.html" class="back-link">← Regresar al inicio</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-text">© 2025 Proyecto Atli — Protegiendo al ajolote mexicano.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Montos rápidos
+    const chips = document.querySelectorAll('.monto-chip');
+    const montoInput = document.getElementById('monto-custom');
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+        montoInput.value = chip.dataset.monto;
+      });
+    });
+    montoInput.addEventListener('input', () => {
+      chips.forEach(c => c.classList.remove('selected'));
+    });
+
+    // Ripple en botón
+    document.querySelector('.btn-donar-submit').addEventListener('click', function(e) {
+      const ripple = document.createElement('span');
+      ripple.classList.add('ripple');
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+      this.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove());
+    });
+
+    // Envío
+    document.getElementById('donar-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombre').value;
+      const monto  = montoInput.value || '100';
+      alert(`¡Gracias ${nombre}! Tu donación de $${monto} MXN hace la diferencia para Atli 💚`);
+    });
+  </script>
+</body>
+</html>
